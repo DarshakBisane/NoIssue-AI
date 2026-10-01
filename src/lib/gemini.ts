@@ -8,7 +8,7 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
-export const GEMINI_MODEL = 'gemini-1.5-flash';
+export const GEMINI_MODEL = 'gemini-2.5-flash';
 export const EMBEDDING_MODEL = 'text-embedding-004';
 
 /**
@@ -33,7 +33,7 @@ export async function generateGeminiText(
   temperature: number = 0.2
 ): Promise<string> {
   let attempts = 0;
-  const maxAttempts = 3;
+  const maxAttempts = 2;
 
   while (attempts < maxAttempts) {
     try {
@@ -52,10 +52,14 @@ export async function generateGeminiText(
       return text || '';
     } catch (err: any) {
       console.warn(`[Gemini Error - Attempt ${attempts}/${maxAttempts}]:`, err.message);
+      // Fail fast immediately on rate limits / quota exceeded
+      if (err.message.includes('429') || err.message.includes('Quota exceeded') || err.message.includes('ResourceExhausted')) {
+        throw new Error(`Gemini rate limited: ${err.message}`);
+      }
       if (attempts >= maxAttempts) {
         throw new Error(`Gemini generation failed after ${maxAttempts} attempts: ${err.message}`);
       }
-      await new Promise((r) => setTimeout(r, 1000 * Math.pow(2, attempts)));
+      await new Promise((r) => setTimeout(r, 600));
     }
   }
 

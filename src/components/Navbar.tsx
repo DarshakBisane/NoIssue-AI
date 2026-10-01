@@ -162,8 +162,8 @@ export const Navbar: React.FC<{ onRaiseIssueClick?: () => void }> = ({ onRaiseIs
                 {/* User Dropdown */}
                 <div className="relative">
                   {(() => {
-                    const displayName = user?.name || user?.fullName || user?.email || 'User';
-                    const initial = displayName.charAt(0).toUpperCase();
+                    const displayName = String(user?.name || user?.fullName || user?.email || 'User');
+                    const initial = (displayName.charAt(0) || 'U').toUpperCase();
 
                     return (
                       <>

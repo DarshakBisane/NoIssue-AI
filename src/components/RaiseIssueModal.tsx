@@ -196,6 +196,7 @@ export const RaiseIssueModal: React.FC<RaiseIssueModalProps> = ({
                   <button
                     key={i}
                     type="button"
+                    data-scenario-btn="true"
                     onClick={() => {
                       setSubject(sc.sub);
                       setDescription(sc.desc);
@@ -212,10 +213,11 @@ export const RaiseIssueModal: React.FC<RaiseIssueModalProps> = ({
 
             {/* Subject */}
             <div>
-              <label className="block text-xs font-semibold text-[#323232] mb-1">
+              <label htmlFor="issue-subject" className="block text-xs font-semibold text-[#323232] mb-1">
                 Subject <span className="text-rose-500">*</span>
               </label>
               <input
+                id="issue-subject"
                 type="text"
                 required
                 value={subject}
@@ -228,10 +230,11 @@ export const RaiseIssueModal: React.FC<RaiseIssueModalProps> = ({
             {/* Category & Order linking */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-[#323232] mb-1">
+                <label htmlFor="issue-category" className="block text-xs font-semibold text-[#323232] mb-1">
                   Category (Optional)
                 </label>
                 <select
+                  id="issue-category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDD0C8] focus:outline-none focus:ring-2 focus:ring-[#7A6555] bg-white text-[#212121]"
@@ -248,10 +251,11 @@ export const RaiseIssueModal: React.FC<RaiseIssueModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#323232] mb-1">
+                <label htmlFor="issue-order" className="block text-xs font-semibold text-[#323232] mb-1">
                   Linked Order (Optional)
                 </label>
                 <select
+                  id="issue-order"
                   value={selectedOrderId}
                   onChange={(e) => setSelectedOrderId(e.target.value)}
                   disabled={loadingOrders}
@@ -269,10 +273,11 @@ export const RaiseIssueModal: React.FC<RaiseIssueModalProps> = ({
 
             {/* Description */}
             <div>
-              <label className="block text-xs font-semibold text-[#323232] mb-1">
+              <label htmlFor="issue-description" className="block text-xs font-semibold text-[#323232] mb-1">
                 Describe the problem in detail <span className="text-rose-500">*</span>
               </label>
               <textarea
+                id="issue-description"
                 required
                 rows={4}
                 value={description}

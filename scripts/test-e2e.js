@@ -89,9 +89,9 @@ async function runEndToEndVerification() {
       password: 'Password123!',
     });
 
-    assert(custLoginRes.status === 200, 'Customer login succeeds (Marcus Vance)');
-    const customerToken = custLoginRes.body.token || extractToken(custLoginRes.cookies);
-    assert(Boolean(customerToken), 'Customer receives valid JWT token');
+    assert(custLoginRes.status === 200, 'Customer login succeeds (Marcus Vance)', JSON.stringify(custLoginRes.body));
+    const customerToken = custLoginRes.body?.token || extractToken(custLoginRes.cookies);
+    assert(Boolean(customerToken), 'Customer receives valid JWT token', `Token missing in: ${JSON.stringify(custLoginRes.body)}`);
 
     const customerHeaders = {
       Authorization: `Bearer ${customerToken}`,

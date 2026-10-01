@@ -61,7 +61,7 @@ export default function SupportDashboardPage() {
   const [loading, setLoading] = useState(true);
   
   // Filters
-  const [statusFilter, setStatusFilter] = useState<'ALL' | 'ESCALATED' | 'REVIEW' | 'ACTIVE' | 'RESOLVED' | 'CLOSED'>('ESCALATED');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | 'ESCALATED' | 'REVIEW' | 'ACTIVE' | 'RESOLVED' | 'CLOSED'>('ALL');
   const [priorityFilter, setPriorityFilter] = useState('ALL');
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
