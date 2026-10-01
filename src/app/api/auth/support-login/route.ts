@@ -71,6 +71,6 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (err: any) {
     console.error('[Support Login Error]:', err);
-    return NextResponse.json({ error: 'Internal server error occurred.' }, { status: 500 });
+    return NextResponse.json({ error: `Support login failed: ${err.message || 'Internal server error'}` }, { status: 500 });
   }
 }
