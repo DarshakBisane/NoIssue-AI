@@ -1,6 +1,30 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+
+// Self-contained .env loader
+try {
+  const envPath = path.resolve(__dirname, '../.env');
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    envContent.split('\n').forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx !== -1) {
+          const key = trimmed.substring(0, eqIdx).trim();
+          const val = trimmed.substring(eqIdx + 1).trim().replace(/^["']|["']$/g, '');
+          if (!process.env[key]) {
+            process.env[key] = val;
+          }
+        }
+      }
+    });
+  }
+} catch (e) {
+  console.warn("Could not read .env directly:", e.message);
+}
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -591,6 +615,7 @@ async function seedData() {
       ('tkt_seed_002', 'usr_cust_sarah', 'CUSTOMER', 'Sarah Chen', 'I received the DHL package today for ORD-77219 and when I opened the box, the entire panel is shattered across the top corner. I need an urgent replacement or refund.', NOW() - INTERVAL '4 hours'),
       ('tkt_seed_002', NULL, 'AI', 'NoIssue AI Agent', 'Hello Sarah, I am very sorry to hear that your monitor arrived damaged. I have investigated your order details and confirmed your delivery today. Because this is a high-value item ($650.00) and you are a valued Platinum VIP customer, I have gathered the complete order, payment, and carrier information and routed your case directly to Clara Oswald from our Senior Resolution Team with highest priority.', NOW() - INTERVAL '4 hours' + INTERVAL '30 seconds'),
       ('tkt_seed_002', 'usr_agent_clara', 'SUPPORT_AGENT', 'Clara Oswald', 'Hi Sarah, I am taking personal ownership of this case. I have verified your order details and DHL tracking. I have already authorized an immediate express replacement unit with priority courier dispatch at zero cost, and scheduled a courier pickup for the damaged unit at your convenience.', NOW() - INTERVAL '1 hour');
+    `);
 
     // Escalation Packet for Ticket 2
     await client.query(`
