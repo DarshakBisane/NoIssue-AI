@@ -3,6 +3,7 @@ import { generateGeminiJson } from '../gemini';
 
 export interface ResolutionGateInput {
   intent: {
+    intent?: string;
     category: string;
     urgency: Priority;
     severity: string;

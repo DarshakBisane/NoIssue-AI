@@ -35,8 +35,23 @@ if (!connectionString) {
 
 const pool = new Pool({
   connectionString,
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
+  connectionTimeoutMillis: 15000,
 });
+
+async function connectWithRetry(maxRetries = 5) {
+  for (let i = 1; i <= maxRetries; i++) {
+    try {
+      console.log(`Attempting database connection (try ${i}/${maxRetries})...`);
+      const client = await pool.connect();
+      return client;
+    } catch (err) {
+      console.warn(`Connection attempt ${i} failed: ${err.message}`);
+      if (i === maxRetries) throw err;
+      await new Promise(r => setTimeout(r, 2000 * i));
+    }
+  }
+}
 
 // Comprehensive Company Policies
 const POLICIES = [
@@ -201,7 +216,7 @@ function generateSimpleEmbedding(text) {
 
 async function seedData() {
   console.log("Connecting to PostgreSQL to seed realistic demo data...");
-  const client = await pool.connect();
+  const client = await connectWithRetry();
 
   try {
     await client.query('BEGIN');

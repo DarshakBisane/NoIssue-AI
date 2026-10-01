@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
       user: {
         id: row.id,
         email: row.email,
+        name: row.full_name,
         fullName: row.full_name,
         role: row.role,
         phone: row.phone,

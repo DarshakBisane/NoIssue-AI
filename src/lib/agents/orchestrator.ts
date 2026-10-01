@@ -98,7 +98,10 @@ export async function runInvestigationWorkflow(options: WorkflowOptions): Promis
     console.log(`[Stage 7/7] Evaluating Resolution Gate...`);
     const gateDecision = evaluateResolutionGate({
       intent: intentOutput,
-      customerHistory: historyOutput.user,
+      customerHistory: {
+        ...historyOutput.user,
+        hasRepeatedComplaints: historyOutput.hasRepeatedComplaints,
+      },
       orderData: orderOutput.matchedOrder,
       paymentData: orderOutput.matchedPayment,
       policy: policyOutput.matchedPolicy,
